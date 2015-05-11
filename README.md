@@ -3,6 +3,8 @@ Cache-toys
 
 ## Simple tools for checking &amp; influencing filesystem cache content on POSIX systems
 
+While the pagecache tools have historically been developped & tested on other systems (Solaris, AIX and some *BSD), they are now mostly used/tested on Linux.  
+
 ### drop-from-pagecache
 Asks the system to remove files content from the pagecache using `posix_fadvise()`.
 
@@ -17,5 +19,5 @@ Display which parts of the content of files (if any) are in the pagecache.
 
 ### hrr
 Simple random reader program with optional hints to the pagecache.
-POSIX (`posix_fadvise`) and Linux specific (`readahead()`) hints are supported.
+Both POSIX (`posix_fadvise()`) and Linux specific (`readahead()`) hints are supported.
 
