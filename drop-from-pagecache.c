@@ -1,4 +1,18 @@
 /*
+ * Copyright (c) 2006-2015, Loic Tortay <tortay@cc.in2p3.fr>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
  * drop-from-pagecache: give hints to the pagecache to make room by removing
  * the no-longer needed data for the files which names are given on the command
  * line.
@@ -6,8 +20,6 @@
  * accessed by a process (of the current user or another) are likely to be only
  * partially removed from the pagecache.
  * This is a hint given to the pagecache which is free to ignore it.
- *
- * Copyright (c) 2012-2015 Loic Tortay <tortay@cc.in2p3.fr>.
  */
 
 #include <sys/stat.h>
