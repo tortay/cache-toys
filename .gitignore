@@ -1,0 +1,8 @@
+drop-from-pagecache
+hrr
+is-in-pagecache
+prefetch-to-pagecache
+slices-in-pagecache
+*.o
+*.log
+*.swp
