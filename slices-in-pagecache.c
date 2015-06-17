@@ -37,18 +37,16 @@
 
 const char progname[] = "slices-in-pagecache";
 
-void print_slice(int, long int, long int, long int, unsigned long int *);
+void print_slice(int, long int, long int, long int);
 
 void
-print_slice(int sdx, long int pgsz, long int slstart, long int slend,
-	unsigned long int *spim)
+print_slice(int sdx, long int pgsz, long int slstart, long int slend)
 {
 	/* sim: pages in memory in "this slice", "+ 1" since slstart is
 	 * 0-based
 	 */
 	unsigned long sim = (slend + 1 - slstart) / pgsz;
 	printf("\tSlice[%d]: %lu:%lu (%lu pages)\n", sdx, slstart, slend, sim);
-	*spim += sim;
 }
 
 int main(int argc, char *argv[])
@@ -62,7 +60,6 @@ int main(int argc, char *argv[])
 #endif
 	size_t		 lip; /* lip: length in pages */
 	unsigned long	 pim, /* pim: pages in memory counter */ k;
-	unsigned long	 spim; /* spim: pages in memory "in slices" counter */
 	long int	 pagesize, slice_start, slice_end;
 	int		 i, fd, in_a_slice, sindex;
 
@@ -97,7 +94,7 @@ int main(int argc, char *argv[])
 				    argv[i]);
 				continue;
 			}
-			pim = spim = 0;
+			pim = 0;
 			sindex = slice_start = slice_end = in_a_slice = 0;
 			printf("'%s':\n", argv[i]);
 			for (k = 0; k < lip; k++) {
@@ -112,18 +109,15 @@ int main(int argc, char *argv[])
 					pim++;
 				} else if (in_a_slice) {
 					in_a_slice = 0;
-					print_slice(sindex, pagesize,
-					    slice_start, slice_end, &spim);
+					print_slice(sindex, pagesize, slice_start,
+					    slice_end);
 					sindex++;
 				}
 			}
 			if (in_a_slice) { /* last page of the file in pagecache */
 				print_slice(sindex, pagesize, slice_start,
-				    slice_end, &spim);
+				    slice_end);
 			}
-			if (spim)
-				printf("\t%lu pages in slices appear to be in "
-				    "pagecache\n", spim);
 			printf("\t%lu pages out of %lu appear to be in "
 			    "pagecache\n", pim, (unsigned long) lip);
 
