@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 				warning(errno, "Unable to stat '%s'", argv[i]);
 				continue;
 			}
-			if (posix_fadvise(fd, 0, st.st_size,
+			if (st.st_size > 0 && posix_fadvise(fd, 0, st.st_size,
 			    POSIX_FADV_WILLNEED) != 0) {
 				warning(errno, "Unable to give cache hint for "
 				    "'%s'", argv[i]);

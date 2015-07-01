@@ -76,63 +76,69 @@ int main(int argc, char *argv[])
 				warning(errno, "Unable to stat '%s'", argv[i]);
 				continue;
 			}
-			filemap = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED,
-			    fd, 0);
-			if (filemap == MAP_FAILED) {
-				warning(errno, "Unable to map '%s'", argv[i]);
-				continue;
-			}
-
-			lip = (st.st_size + pagesize - 1) / pagesize;
-			pages = malloc(lip);
-			if (pages == NULL)
-				error(2, errno, "Unable to allocate pages[%lu]",
-				    (unsigned long) lip);
-
-			if (mincore(filemap, st.st_size, pages) == -1) {
-				warning(errno, "Unable to get core info for '%s'",
-				    argv[i]);
-				continue;
-			}
-			pim = 0;
-			sindex = slice_start = slice_end = in_a_slice = 0;
-			printf("'%s':\n", argv[i]);
-			for (k = 0; k < lip; k++) {
-				if (pages[k] & 1) {
-					if (!in_a_slice) {
-						in_a_slice = 1;
-						slice_start = pagesize * k;
-						slice_end = slice_start
-						    + pagesize - 1;
-					} else
-						slice_end += pagesize;
-					pim++;
-				} else if (in_a_slice) {
-					in_a_slice = 0;
-					print_slice(sindex, pagesize, slice_start,
-					    slice_end);
-					sindex++;
+			if (st.st_size > 0) {
+				filemap = mmap(NULL, st.st_size, PROT_READ,
+				    MAP_SHARED, fd, 0);
+				if (filemap == MAP_FAILED) {
+					warning(errno, "Unable to map '%s'",
+					    argv[i]);
+					continue;
 				}
-			}
-			if (in_a_slice) { /* last page of the file in pagecache */
-				print_slice(sindex, pagesize, slice_start,
-				    slice_end);
-			}
-			printf("\t%lu pages out of %lu appear to be in "
-			    "pagecache\n", pim, (unsigned long) lip);
+				lip = (st.st_size + pagesize - 1) / pagesize;
+				pages = malloc(lip);
+				if (pages == NULL)
+					error(2, errno, "Unable to allocate "
+					    "pages[%lu]", (unsigned long) lip);
 
-			free(pages);
-			pages = NULL;
+				if (mincore(filemap, st.st_size, pages) == -1) {
+					warning(errno, "Unable to get core info"
+					    " for '%s'", argv[i]);
+					continue;
+				}
+				pim = 0;
+				sindex = slice_start = slice_end = in_a_slice = 0;
+				printf("'%s':\n", argv[i]);
+				for (k = 0; k < lip; k++) {
+					if (pages[k] & 1) {
+						if (!in_a_slice) {
+							in_a_slice = 1;
+							slice_start = pagesize
+							    * k;
+							slice_end = slice_start
+							    + pagesize - 1;
+						} else {
+							slice_end += pagesize;
+						}
+						pim++;
+					} else if (in_a_slice) {
+						in_a_slice = 0;
+						print_slice(sindex, pagesize,
+						    slice_start, slice_end);
+						sindex++;
+					}
+				}
+				if (in_a_slice) {
+				/* last page of the file in pagecache ? */
+					print_slice(sindex, pagesize,
+					    slice_start, slice_end);
+				}
+				printf("\t%lu pages out of %lu appear to be in "
+				    "pagecache\n", pim, (unsigned long) lip);
 
-			if (munmap(filemap, st.st_size) == -1) {
-				warning(errno, "Unable to unmap '%s'",
-				    argv[i]);
-				continue;
+				free(pages);
+				pages = NULL;
+
+				if (munmap(filemap, st.st_size) == -1) {
+					warning(errno, "Unable to unmap '%s'",
+					    argv[i]);
+					continue;
+				}
 			}
 			if (close(fd) == -1)
 				warning(errno, "Problem closing '%s'", argv[i]);
-		} else
+		} else {
 			warning(errno, "Unable to open '%s'", argv[i]);
+		}
 	}
 	return (0);
 }
