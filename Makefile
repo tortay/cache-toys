@@ -2,7 +2,7 @@
 # $Id$
 #
 CC	= cc
-CFLAGS	= -g -m64 -D_XOPEN_SOURCE=600 -W -Wall -Werror -Wstrict-prototypes \
+CFLAGS	= -g -D_XOPEN_SOURCE=600 -W -Wall -Werror -Wstrict-prototypes \
 	-Wpointer-arith -Wmissing-prototypes -Wsign-compare -std=c99 \
 	-pedantic -pipe
 LDFLAGS	=
