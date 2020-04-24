@@ -7,6 +7,8 @@ While the pagecache tools have historically been developped & tested on some oth
 
 The tools **no longer work** with Linux kernels 4+.
 
+Theses tools **no longer work** with Linux kernels 4+.
+
 ### drop-from-pagecache
 Asks the system to remove files content from the pagecache using `posix_fadvise()`.
 
