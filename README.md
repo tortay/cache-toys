@@ -5,8 +5,6 @@ Cache-toys
 
 While the pagecache tools have historically been developped & tested on some other systems, they are now mostly used/tested on Linux.
 
-The tools **no longer work** with Linux kernels 4+.
-
 Theses tools **no longer work** with Linux kernels 4+.
 
 ### drop-from-pagecache
