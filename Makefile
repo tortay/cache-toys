@@ -2,9 +2,9 @@
 # $Id$
 #
 CC	= cc
-CFLAGS	= -g -D_XOPEN_SOURCE=600 -W -Wall -Werror -Wstrict-prototypes \
-	-Wpointer-arith -Wmissing-prototypes -Wsign-compare -std=c99 \
-	-pedantic -pipe
+CFLAGS	= -g -D_XOPEN_SOURCE=600 -D_DEFAULT_SOURCE -D_BSD_SOURCE \
+	-W -Wall -Werror -Wstrict-prototypes -Wpointer-arith \
+	-Wmissing-prototypes -Wsign-compare -std=c99 -pedantic -pipe
 LDFLAGS	=
 #
 RM	= /bin/rm
@@ -15,7 +15,6 @@ RM	= /bin/rm
 	$(CC) $(CFLAGS) -c $<
 
 all: drop-from-pagecache is-in-pagecache prefetch-to-pagecache slices-in-pagecache
-
 
 drop-from-pagecache: drop-from-pagecache.o errwarn.o
 	@$(RM) -f $@

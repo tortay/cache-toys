@@ -18,10 +18,6 @@
  * All these files must be readable by the user.
  */
 
-#ifndef GLIBC_IS_NO_LONGER_BRAINDEAD
-#define _BSD_SOURCE
-#endif /* GLIBC_IS_NO_LONGER_BRAINDEAD */
-
 #include <sys/mman.h>
 #include <sys/stat.h>
 
